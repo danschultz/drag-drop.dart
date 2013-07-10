@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>drag_and_drop</title>
+    <link href="drag_and_drop.css" rel="stylesheet" type="text/css">
+  </head>
+ 
+  <body>
+    <div class="drag-container">
+      <div class="drag-source"></div>
+      <div class="drop-target">
+        <div></div>
+      </div>
+      <svg width="100" height="100">
+        <g class="drop-target">
+          <rect x="25" y="25" width="50" height="50" fill="yellow"/>
+        </g>
+      </svg>
+    </div>
+    
+    <script type="application/dart" src="drag_and_drop.dart"></script>
+    <!-- for this next line to work, your pubspec.yaml file must have a dependency on 'browser' -->
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>

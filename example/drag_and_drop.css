@@ -1,0 +1,17 @@
+.drag-container {
+  bottom: 0;
+  position: absolute;
+}
+
+.drag-source {
+  width: 100px;
+  height: 100px;
+  background-color: red;
+}
+
+.drop-target {
+  width: 100px;
+  height: 100px;
+  margin-top: 5px;
+  background-color: yellow;
+}
