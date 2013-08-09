@@ -3,7 +3,6 @@ library drag_drop;
 import 'dart:async';
 import 'dart:collection';
 import 'dart:html';
-import 'dart:math';
 import 'dart:svg' as svg;
 import 'package:logging/logging.dart';
 
@@ -15,4 +14,4 @@ part 'src/drag_data.dart';
 
 bool isDragging = false;
 
-var _logger = new Logger("drag_drop");
+Logger _logger = new Logger("drag_drop");

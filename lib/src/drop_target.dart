@@ -81,6 +81,7 @@ class DropTarget {
     // bounding box of the target element.
     if (_computedTargetBounds.containsPoint(event.client)) {
       var found = _dragImage._elementUnder(event.client);
+      _logger.finest("Element under mouse '$found'");
       
       // Check if the found element is a child of this target.
       if (!isOver) {
@@ -125,7 +126,7 @@ class DropTarget {
   
   void _onDragOver(DragEvent event) {
     if (_isAccepted) {
-      _logger.finer("Drag over");
+      _logger.finest("Drag over");
     }
   }
   

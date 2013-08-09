@@ -150,7 +150,7 @@ class DragSource {
   
   void _setupListenersForLogging() {
     onDragStart.listen((e) => _logger.finer("Drag start"));
-    onDrag.listen((e) => _logger.finer("Drag"));
+    onDrag.listen((e) => _logger.finest("Drag"));
     onDragEnd.listen((e) => _logger.finer("Drag end"));
   }
   
