@@ -1,5 +1,5 @@
 name: drag_drop
-version: 0.1.1
+version: 0.1.1+1
 dependencies:
   logging: '>=0.5.13'
 dev_dependencies:
