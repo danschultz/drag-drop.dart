@@ -118,6 +118,7 @@ class DragSource {
         }
       }
       _dragEvent = new DragEvent(this);
+      _globalOnDragStartedController.add(true);
       _onDragStartController.add(_dragEvent);
       _setupDragListeners();
       _showDragImage();
@@ -129,6 +130,7 @@ class DragSource {
     if (isDragging) {
       _cleanupDrag();
       _onDragEndController.add(_dragEvent);
+      _globalOnDragEndController.add(true);
     }
   }
 

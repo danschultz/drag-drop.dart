@@ -28,36 +28,14 @@ class DropTarget {
   }
 
   void _initializeDragListeners() {
-    _mouseMove = window.onMouseMove.listen((e) {
-      if (isDragging) {
-        // Cache the target's bounds for faster hit testing.
-        if (_computedTargetBounds == null) {
-          _computedTargetBounds = element.getBoundingClientRect();
-        }
-
-        var wasOver = _isOver;
-        _isOver = _isMouseOverTarget(e);
-
-        if (_isOver && !wasOver) {
-          _onDragEnterController.add(_dragEvent);
-        }
-
-        if (!_isOver && wasOver) {
-          _onDragLeaveController.add(_dragEvent);
-        }
-
-        if (_isOver && wasOver) {
-          _onDragOverController.add(_dragEvent);
-        }
-      }
+    _globalOnDragStarted.listen((_) {
+      _mouseMove = window.onMouseMove.listen(_onMouseMove);
+      _mouseUp = window.onMouseUp.listen(_onMouseUp);
     });
 
-    _mouseUp = window.onMouseUp.listen((e) {
-      if (_isOver) {
-        _onDropController.add(_dragEvent);
-        _onDragLeaveController.add(_dragEvent);
-        _computedTargetBounds = null;
-      }
+    _globalOnDragEnd.listen((_) {
+      _mouseMove.cancel();
+      _mouseUp.cancel();
     });
 
     onDragEnter.listen(_onDragEnter);
@@ -71,9 +49,6 @@ class DropTarget {
     _onDragOverController.close();
     _onDragLeaveController.close();
     _onDropController.close();
-
-    _mouseMove.cancel();
-    _mouseUp.cancel();
   }
 
   bool _isMouseOverTarget(MouseEvent event) {
@@ -123,6 +98,37 @@ class DropTarget {
 
     if (accepted) {
       _acceptDrag();
+    }
+  }
+
+  void _onMouseMove(MouseEvent event) {
+    if (isDragging) {
+      // Cache the target's bounds for faster hit testing.
+      if (_computedTargetBounds == null) {
+        _computedTargetBounds = element.getBoundingClientRect();
+      }
+
+      var wasOver = _isOver;
+      _isOver = _isMouseOverTarget(event);
+
+      if (_isOver && !wasOver) {
+        _onDragEnterController.add(_dragEvent);
+      }
+
+      if (!_isOver && wasOver) {
+        _onDragLeaveController.add(_dragEvent);
+      }
+
+      if (_isOver && wasOver) {
+        _onDragOverController.add(_dragEvent);
+      }
+    }
+  }
+
+  void _onMouseUp(MouseEvent event) {
+    if (_isOver) {
+      _onDropController.add(_dragEvent);
+      _onDragLeaveController.add(_dragEvent);
     }
   }
 
