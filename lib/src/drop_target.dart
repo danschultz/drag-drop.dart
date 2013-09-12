@@ -93,7 +93,7 @@ class DropTarget {
     if (accept != null) {
       accepted = accept(event.source);
     } else {
-      accepted = event.source.data.keys.any((k) => handlers.containsKey(k));
+      accepted = event.source.data.types.any((k) => handlers.containsKey(k));
     }
 
     if (accepted) {

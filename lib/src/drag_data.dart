@@ -5,6 +5,8 @@ typedef Object _Data();
 class DragData {
   Map<String, _Data> _data;
 
+  Iterable<String> get types => _data.keys;
+
   DragData();
 
   bool contains(String type) {
