@@ -3,7 +3,7 @@ part of drag_drop;
 typedef Object _Data();
 
 class DragData {
-  Map<String, _Data> _data;
+  Map<String, _Data> _data = new HashMap();
 
   Iterable<String> get types => _data.keys;
 
