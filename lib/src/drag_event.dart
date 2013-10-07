@@ -3,7 +3,8 @@ part of drag_drop;
 class DragEvent {
 
   final DragSource source;
-  MouseEvent mouseEvent;
+  MouseEvent _mouseEvent;
+  MouseEvent get mouseEvent => _mouseEvent;
 
   DragEvent(this.source);
 

@@ -146,7 +146,7 @@ class DragSource {
     var pointerOrigin = _lastPointerPosition;
 
     window.onMouseMove.takeWhile((e) => isDragging).listen((MouseEvent e) {
-      _dragEvent.mouseEvent = e;
+      _dragEvent._mouseEvent = e;
       _onDragController.add(_dragEvent);
       _dragImage._move(e.client - pointerOrigin);
     });
