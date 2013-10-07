@@ -1,9 +1,11 @@
 part of drag_drop;
 
 class DragEvent {
-  
+
   final DragSource source;
-  
-  const DragEvent(this.source);
-  
+  MouseEvent _mouseEvent;
+  MouseEvent get mouseEvent => _mouseEvent;
+
+  DragEvent(this.source);
+
 }

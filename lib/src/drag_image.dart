@@ -9,8 +9,8 @@ class DragImage {
 
   DragImage(this.element, {this.offset: const Point(0, 0)});
 
-  factory DragImage.clone(Element element) {
-    return new DragImage(element.clone(true));
+  factory DragImage.clone(Element element, {Point offset: const Point(0, 0)}) {
+    return new DragImage(element.clone(true), offset: offset);
   }
 
   Element _elementUnder(Point client) {
