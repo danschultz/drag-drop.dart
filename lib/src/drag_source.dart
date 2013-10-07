@@ -13,7 +13,7 @@ class DragSource {
 
   int distance = 5;
   bool enabled = true;
-  DragImageFactory feedbackImage = (element, pointer) => new DragImage.clone(element);
+  DragImageFactory feedbackImage;
   final DragData data = new DragData();
 
   bool _isDestroyed = false;
@@ -21,7 +21,10 @@ class DragSource {
   StreamSubscription _mouseDrag;
   Point _lastPointerPosition;
 
-  DragSource(this.element, {this.manual: false}) {
+  DragSource(this.element, {this.manual: false, this.feedbackImage: null}) {
+    if (feedbackImage == null) {
+      feedbackImage = (element, pointer) => new DragImage.clone(element);
+    }
     _initialize();
     _setupListenersForLogging();
   }
@@ -143,6 +146,7 @@ class DragSource {
     var pointerOrigin = _lastPointerPosition;
 
     window.onMouseMove.takeWhile((e) => isDragging).listen((MouseEvent e) {
+      _dragEvent._mouseEvent = e;
       _onDragController.add(_dragEvent);
       _dragImage._move(e.client - pointerOrigin);
     });

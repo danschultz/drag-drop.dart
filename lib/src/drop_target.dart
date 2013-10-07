@@ -34,8 +34,12 @@ class DropTarget {
     });
 
     _globalOnDragEnd.listen((_) {
-      _mouseMove.cancel();
-      _mouseUp.cancel();
+      if (_mouseMove != null) {
+        _mouseMove.cancel();
+      }
+      if (_mouseUp != null) {
+        _mouseUp.cancel();
+      }
     });
 
     onDragEnter.listen(_onDragEnter);
