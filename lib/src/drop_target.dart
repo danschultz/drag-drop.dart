@@ -28,12 +28,12 @@ class DropTarget {
   }
 
   void _initializeDragListeners() {
-    _globalOnDragStarted.listen((_) {
+    globalOnDragStart.listen((_) {
       _mouseMove = window.onMouseMove.listen(_onMouseMove);
       _mouseUp = window.onMouseUp.listen(_onMouseUp);
     });
 
-    _globalOnDragEnd.listen((_) {
+    globalOnDragEnd.listen((_) {
       if (_mouseMove != null) {
         _mouseMove.cancel();
       }
