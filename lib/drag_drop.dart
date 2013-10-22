@@ -14,10 +14,10 @@ part 'src/drag_data.dart';
 
 bool isDragging = false;
 
-StreamController _globalOnDragStartedController = new StreamController.broadcast(sync: true);
-Stream get _globalOnDragStarted => _globalOnDragStartedController.stream;
+StreamController _globalOnDragStartController = new StreamController.broadcast(sync: true);
+Stream get globalOnDragStart => _globalOnDragStartController.stream;
 
 StreamController _globalOnDragEndController = new StreamController.broadcast(sync: true);
-Stream get _globalOnDragEnd => _globalOnDragEndController.stream;
+Stream get globalOnDragEnd => _globalOnDragEndController.stream;
 
 Logger _logger = new Logger("drag_drop");
