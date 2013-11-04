@@ -10,9 +10,9 @@ void main() {
   Logger.root.onRecord.listen(new PrintHandler());
   Logger.root.level = Level.FINER;
 
-  var source = new DragSource(query(".drag-source"));
+  var source = new DragSource(querySelector(".drag-source"));
 
-  queryAll(".drop-target").forEach((Element e) {
+  querySelectorAll(".drop-target").forEach((Element e) {
     var target = new DropTarget(e);
     target.accept = (_) => true;
   });

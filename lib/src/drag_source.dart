@@ -37,7 +37,7 @@ class DragSource {
   }
 
   void _setupAutoMouseDrag() {
-    var mouseDrag = element.onMouseDown.transform(new StreamTransformer(
+    var mouseDrag = element.onMouseDown.transform(new StreamTransformer.fromHandlers(
         handleData: (MouseEvent md, EventSink s) {
           md.preventDefault();
 
@@ -61,7 +61,7 @@ class DragSource {
   }
 
   void _setupAutoTouchDrag() {
-    var touchDrag = element.onTouchStart.transform(new StreamTransformer(
+    var touchDrag = element.onTouchStart.transform(new StreamTransformer.fromHandlers(
         handleData: (TouchEvent ts, EventSink s) {
           var touchMove = window.onTouchMove.listen((TouchEvent tm) {
             _logger.finest("Touch move");
