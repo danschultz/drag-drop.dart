@@ -18,7 +18,7 @@ class DropTarget {
   bool _isAccepted = false;
   bool get isAccepted => _isAccepted;
 
-  Rect _computedTargetBounds;
+  Rectangle _computedTargetBounds;
 
   StreamSubscription _mouseMove;
   StreamSubscription _mouseUp;
