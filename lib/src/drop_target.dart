@@ -4,7 +4,6 @@ typedef bool AcceptCallback(DragSource source);
 typedef void DropHandler(Object data);
 
 class DropTarget {
-
   final Element element;
 
   var _handlers = {};
@@ -13,67 +12,11 @@ class DropTarget {
 
   AcceptCallback accept;
 
-  bool _isOver = false;
-
   bool _isAccepted = false;
   bool get isAccepted => _isAccepted;
 
-  Rectangle _computedTargetBounds;
-
   StreamSubscription _mouseMove;
   StreamSubscription _mouseUp;
-
-  DropTarget(this.element) {
-    _initializeDragListeners();
-  }
-
-  void _initializeDragListeners() {
-    globalOnDragStart.listen((_) {
-      _mouseMove = window.onMouseMove.listen(_onMouseMove);
-      _mouseUp = window.onMouseUp.listen(_onMouseUp);
-    });
-
-    globalOnDragEnd.listen((_) {
-      if (_mouseMove != null) {
-        _mouseMove.cancel();
-      }
-      if (_mouseUp != null) {
-        _mouseUp.cancel();
-      }
-    });
-
-    onDragEnter.listen(_onDragEnter);
-    onDragOver.listen(_onDragOver);
-    onDragLeave.listen(_onDragLeave);
-    onDrop.listen(_onDrop);
-  }
-
-  void destroy() {
-    _onDragEnterController.close();
-    _onDragOverController.close();
-    _onDragLeaveController.close();
-    _onDropController.close();
-  }
-
-  bool _isMouseOverTarget(MouseEvent event) {
-    var isOver = false;
-
-    // Do a more precise hit test when the pointer's position is within the
-    // bounding box of the target element.
-    if (_computedTargetBounds.containsPoint(event.client)) {
-      var found = _dragImage._elementUnder(event.client);
-      _logger.finest("Element under mouse '$found'");
-
-      // Check if the found element is a child of this target.
-      if (!isOver) {
-        // If the element is an SVG element, then we need to do a special check,
-        // because IE9 doesn't support SvgElement.contains().
-        isOver = !(element is svg.SvgElement) ? element.contains(found) : _svgContains(element, found);
-      }
-    }
-
-    return isOver;
-  }
 
   var _onDragEnterController = new StreamController<DragEvent>.broadcast(sync: true);
   Stream<DragEvent> get onDragEnter => _onDragEnterController.stream;
@@ -86,6 +29,40 @@ class DropTarget {
 
   var _onDropController = new StreamController<DragEvent>.broadcast(sync: true);
   Stream<DragEvent> get onDrop => _onDropController.stream;
+
+  DropTarget(this.element) {
+    _dragManager.registerTarget(this);
+
+    onDragEnter.listen(_onDragEnter);
+    onDragOver.listen(_onDragOver);
+    onDragLeave.listen(_onDragLeave);
+    onDrop.listen(_onDrop);
+  }
+
+  void destroy() {
+    _dragManager.unregisterTarget(this);
+
+    _onDragEnterController.close();
+    _onDragOverController.close();
+    _onDragLeaveController.close();
+    _onDropController.close();
+  }
+
+  void _enter() {
+    _onDragEnterController.add(_dragEvent);
+  }
+
+  void _leave() {
+    _onDragLeaveController.add(_dragEvent);
+  }
+
+  void _hover() {
+    _onDragOverController.add(_dragEvent);
+  }
+
+  void _drop() {
+    _onDropController.add(_dragEvent);
+  }
 
   void _onDragEnter(DragEvent event) {
     _logger.finer("Drag enter");
@@ -105,44 +82,12 @@ class DropTarget {
     }
   }
 
-  void _onMouseMove(MouseEvent event) {
-    if (isDragging) {
-      // Cache the target's bounds for faster hit testing.
-      if (_computedTargetBounds == null) {
-        _computedTargetBounds = element.getBoundingClientRect();
-      }
-
-      var wasOver = _isOver;
-      _isOver = _isMouseOverTarget(event);
-
-      if (_isOver && !wasOver) {
-        _onDragEnterController.add(_dragEvent);
-      }
-
-      if (!_isOver && wasOver) {
-        _onDragLeaveController.add(_dragEvent);
-      }
-
-      if (_isOver && wasOver) {
-        _onDragOverController.add(_dragEvent);
-      }
-    }
-  }
-
-  void _onMouseUp(MouseEvent event) {
-    if (_isOver) {
-      _onDropController.add(_dragEvent);
-      _onDragLeaveController.add(_dragEvent);
-    }
-  }
-
   void _onDragOver(DragEvent event) {
     _logger.finest("Drag over");
   }
 
   void _onDragLeave(DragEvent event) {
     _logger.finer("Drag leave");
-    _isOver = false;
     _isAccepted = false;
   }
 
@@ -164,12 +109,4 @@ class DropTarget {
       }
     });
   }
-
-}
-
-bool _svgContains(svg.SvgElement svgNode, Element element) {
-  if (svgNode != element) {
-    return svgNode.children.any((c) => _svgContains(c, element));
-  }
-  return true;
 }
