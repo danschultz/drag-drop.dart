@@ -6,6 +6,8 @@ typedef void DropHandler(Object data);
 class DropTarget {
   final Element element;
 
+  bool enabled = true;
+
   var _handlers = {};
   Map<String, DropHandler> get handlers => _handlers;
   set handlers(Map<String, DropHandler> value) => _handlers = value != null ? value : {};
@@ -49,19 +51,27 @@ class DropTarget {
   }
 
   void _enter() {
-    _onDragEnterController.add(_dragEvent);
+    if (enabled) {
+      _onDragEnterController.add(_dragEvent);
+    }
   }
 
   void _leave() {
-    _onDragLeaveController.add(_dragEvent);
+    if (enabled) {
+      _onDragLeaveController.add(_dragEvent);
+    }
   }
 
   void _hover() {
-    _onDragOverController.add(_dragEvent);
+    if (enabled) {
+      _onDragOverController.add(_dragEvent);
+    }
   }
 
   void _drop() {
-    _onDropController.add(_dragEvent);
+    if (enabled) {
+      _onDropController.add(_dragEvent);
+    }
   }
 
   void _onDragEnter(DragEvent event) {
