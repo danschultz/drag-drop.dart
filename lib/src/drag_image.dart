@@ -8,11 +8,11 @@ class DragImage {
   String _cursor;
   Point _origin;
 
-  DragImage(this.element, {this.offset: const Point(0, 0), String cursor: "default"}) {
+  DragImage(this.element, {this.offset: const Point(0, 0), String cursor: "auto"}) {
     _cursor = cursor;
   }
 
-  factory DragImage.clone(Element element, {Point offset: const Point(0, 0), String cursor: "default"}) {
+  factory DragImage.clone(Element element, {Point offset: const Point(0, 0), String cursor: "auto"}) {
     return new DragImage(element.clone(true), offset: offset, cursor: cursor);
   }
 
