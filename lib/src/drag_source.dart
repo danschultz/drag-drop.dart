@@ -15,18 +15,18 @@ class DragSource {
   bool enabled = true;
   DragImageFactory feedbackImage;
   final DragData data = new DragData();
-  String cursor;
+  String _cursor;
 
   bool _isDestroyed = false;
 
   StreamSubscription _mouseDrag;
   Point _lastPointerPosition;
 
-  DragSource(this.element, {this.manual: false, this.feedbackImage: null, this.cursor: 'auto'}) {
+  DragSource(this.element, {this.manual: false, this.feedbackImage: null, cursor: 'auto'}) : this._cursor = cursor {
     if (feedbackImage == null) {
-      feedbackImage = (element, pointer) => new DragImage.clone(element, cursor: cursor);
+      feedbackImage = (element, pointer) => new DragImage.clone(element);
     }
-    element.style.cursor = cursor;
+    element.style.cursor = _cursor;
     _initialize();
     _setupListenersForLogging();
   }
@@ -141,7 +141,7 @@ class DragSource {
 
   void _showDragImage() {
     _dragImage = feedbackImage(element, _lastPointerPosition);
-    _dragImage._show(_lastPointerPosition);
+    _dragImage._show(_lastPointerPosition, _cursor);
   }
 
   void _setupDragListeners() {
