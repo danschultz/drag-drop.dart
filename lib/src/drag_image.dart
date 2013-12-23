@@ -8,12 +8,10 @@ class DragImage {
   String _cursor;
   Point _origin;
 
-  DragImage(this.element, {this.offset: const Point(0, 0), String cursor: "auto"}) {
-    _cursor = cursor;
-  }
+  DragImage(this.element, {this.offset: const Point(0, 0)});
 
-  factory DragImage.clone(Element element, {Point offset: const Point(0, 0), String cursor: "auto"}) {
-    return new DragImage(element.clone(true), offset: offset, cursor: cursor);
+  factory DragImage.clone(Element element, {Point offset: const Point(0, 0)}) {
+    return new DragImage(element.clone(true), offset: offset);
   }
 
   Element _elementUnder(Point client) {
@@ -25,8 +23,9 @@ class DragImage {
     return found;
   }
 
-  void _show(Point origin) {
+  void _show(Point origin, String cursor) {
     _origin = origin + offset;
+    element.style.cursor = cursor;
     document.body.append(element);
     _setPosition(_origin);
   }
@@ -38,7 +37,6 @@ class DragImage {
 
   void _setPosition(Point position) {
     element.style
-        ..cursor = _cursor
         ..position = 'absolute'
         ..top = '${position.y.toInt()}px'
         ..left = '${position.x.toInt()}px';
