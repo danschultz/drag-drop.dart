@@ -1,5 +1,5 @@
 name: drag_drop
-version: 2.0.0
+version: 2.0.0+1
 dependencies:
   browser_detect:
     git: git@github.com:danschultz/browser_detect.dart.git
