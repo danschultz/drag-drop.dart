@@ -15,11 +15,11 @@ class DragImage {
   }
 
   Element _elementUnder(Point client) {
-    // In order to get the element under the drag image, we need to
-    // toggle its visibility.
-    element.style.visibility = "hidden";
+    // In order to get the element under the drag image, we need to hide it.
+    var previousDisplay = element.style.display;
+    element.style.display = "none";
     var found = document.elementFromPoint(client.x, client.y);
-    element.style.visibility = "visible";
+    element.style.display = previousDisplay;
     return found;
   }
 
