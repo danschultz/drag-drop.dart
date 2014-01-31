@@ -133,6 +133,7 @@ class DragSource {
 
   void stopDrag() {
     if (isDragging) {
+      isDragging = false;
       _onDragEndController.add(_dragEvent);
       _globalOnDragEndController.add(_dragEvent);
       _cleanupDrag();
@@ -164,7 +165,6 @@ class DragSource {
     _dragImage._hide();
     _dragImage = null;
     _dragEvent = null;
-    isDragging = false;
   }
 
   void _setupListenersForLogging() {
