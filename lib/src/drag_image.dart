@@ -5,6 +5,7 @@ class DragImage {
   final Element element;
   final Point offset;
 
+  String _cursor;
   Point _origin;
 
   DragImage(this.element, {this.offset: const Point(0, 0)});
@@ -14,16 +15,17 @@ class DragImage {
   }
 
   Element _elementUnder(Point client) {
-    // In order to get the element under the drag image, we need to
-    // toggle its visibility.
-    element.style.visibility = "hidden";
+    // In order to get the element under the drag image, we need to hide it.
+    var previousDisplay = element.style.display;
+    element.style.display = "none";
     var found = document.elementFromPoint(client.x, client.y);
-    element.style.visibility = "visible";
+    element.style.display = previousDisplay;
     return found;
   }
 
-  void _show(Point origin) {
+  void _show(Point origin, String cursor) {
     _origin = origin + offset;
+    element.style.cursor = cursor;
     document.body.append(element);
     _setPosition(_origin);
   }
