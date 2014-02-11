@@ -7,6 +7,7 @@ DragEvent _dragEvent;
 
 class DragSource {
   static const String IS_DRAGGING = "is-dragging";
+  static const String IS_GRABBING = "is-grabbing";
 
   final bool manual;
   bool get auto => !manual;
@@ -42,6 +43,7 @@ class DragSource {
     var mouseDrag = element.onMouseDown.transform(new StreamTransformer.fromHandlers(
         handleData: (MouseEvent md, EventSink s) {
           md.preventDefault();
+          element.classes.add(IS_GRABBING);
 
           var mouseMove = window.onMouseMove.listen((MouseEvent mm) {
             _lastPointerPosition = mm.client;
@@ -49,6 +51,7 @@ class DragSource {
           });
 
           window.onMouseUp.take(1).listen((e) {
+            element.classes.remove(IS_GRABBING);
             mouseMove.cancel();
             _logger.finest("Detect start drag: Mouse up");
           });
@@ -66,6 +69,7 @@ class DragSource {
     var touchDrag = element.onTouchStart.transform(new StreamTransformer.fromHandlers(
         handleData: (TouchEvent ts, EventSink s) {
           var touchMove = window.onTouchMove.listen((TouchEvent tm) {
+            element.classes.add(IS_GRABBING);
             _logger.finest("Touch move");
 
             var touchPosition = tm.touches.first.client;
@@ -74,6 +78,7 @@ class DragSource {
           });
 
           window.onTouchEnd.take(1).listen((e) {
+            element.classes.remove(IS_GRABBING);
             touchMove.cancel();
             _logger.finest("Detect start drag: Touch end");
           });
@@ -113,6 +118,7 @@ class DragSource {
     if (_isDestroyed) {
       throw new StateError("Cannot start a drag on a destroyed drag source.");
     }
+    element.classes.remove(IS_GRABBING);
     element.classes.add(IS_DRAGGING);
 
     if (!isDragging && enabled) {
