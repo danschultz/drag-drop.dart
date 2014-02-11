@@ -1,8 +1,6 @@
 part of drag_drop;
 
 class DragImage {
-  static const String IS_SHOWN = "is-shown";
-
   final Element element;
   final Point offset;
 
@@ -26,7 +24,6 @@ class DragImage {
   }
 
   void _show(Point origin) {
-    element.classes.add(IS_SHOWN);
     _origin = origin + offset;
     document.body.append(element);
     _setPosition(_origin);
