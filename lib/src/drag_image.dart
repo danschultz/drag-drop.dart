@@ -1,14 +1,14 @@
 part of drag_drop;
 
 class DragImage {
-
   final Element element;
   final Point offset;
 
-  String _cursor;
   Point _origin;
 
-  DragImage(this.element, {this.offset: const Point(0, 0)});
+  DragImage(this.element, {this.offset: const Point(0, 0)}) {
+    element.classes.add("drag-image");
+  }
 
   factory DragImage.clone(Element element, {Point offset: const Point(0, 0)}) {
     return new DragImage(element.clone(true), offset: offset);
@@ -23,9 +23,8 @@ class DragImage {
     return found;
   }
 
-  void _show(Point origin, String cursor) {
+  void _show(Point origin) {
     _origin = origin + offset;
-    element.style.cursor = cursor;
     document.body.append(element);
     _setPosition(_origin);
   }

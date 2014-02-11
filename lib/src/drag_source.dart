@@ -6,6 +6,7 @@ DragImage _dragImage;
 DragEvent _dragEvent;
 
 class DragSource {
+  static const String IS_DRAGGING = "is-dragging";
 
   final bool manual;
   bool get auto => !manual;
@@ -15,18 +16,17 @@ class DragSource {
   bool enabled = true;
   DragImageFactory feedbackImage;
   final DragData data = new DragData();
-  String _cursor;
 
   bool _isDestroyed = false;
 
   StreamSubscription _mouseDrag;
   Point _lastPointerPosition;
 
-  DragSource(this.element, {this.manual: false, this.feedbackImage: null, cursor: 'auto'}) : this._cursor = cursor {
+  DragSource(this.element, {this.manual: false, this.feedbackImage: null}) {
     if (feedbackImage == null) {
       feedbackImage = (element, pointer) => new DragImage.clone(element);
     }
-    element.style.cursor = _cursor;
+    element.classes.add("drag-source");
     _initialize();
     _setupListenersForLogging();
   }
@@ -113,6 +113,7 @@ class DragSource {
     if (_isDestroyed) {
       throw new StateError("Cannot start a drag on a destroyed drag source.");
     }
+    element.classes.add(IS_DRAGGING);
 
     if (!isDragging && enabled) {
       if (manual) {
@@ -133,6 +134,7 @@ class DragSource {
 
   void stopDrag() {
     if (isDragging) {
+      element.classes.remove(IS_DRAGGING);
       isDragging = false;
       _onDragEndController.add(_dragEvent);
       _globalOnDragEndController.add(_dragEvent);
@@ -142,7 +144,7 @@ class DragSource {
 
   void _showDragImage() {
     _dragImage = feedbackImage(element, _lastPointerPosition);
-    _dragImage._show(_lastPointerPosition, _cursor);
+    _dragImage._show(_lastPointerPosition);
   }
 
   void _setupDragListeners() {
