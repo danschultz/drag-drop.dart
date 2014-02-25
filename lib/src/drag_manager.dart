@@ -4,7 +4,6 @@ DragManager _dragManager = new DragManager();
 
 class DragManager {
   StreamSubscription _mouseMove;
-  StreamSubscription _mouseUp;
 
   List<DropTarget> _targets = [];
   DropTarget _activeTarget;
@@ -12,24 +11,19 @@ class DragManager {
   DragManager() {
     globalOnDragStart.listen((event) {
       _mouseMove = window.onMouseMove.listen(_onMouseMove);
-      _mouseUp = window.onMouseUp.listen(_onMouseUp);
     });
 
     globalOnDragEnd.listen((_) {
       _mouseMove.cancel();
-      _mouseUp.cancel();
+      if (_activeTarget != null) {
+        _activeTarget._drop();
+        _activeTarget = null;
+      }
     });
   }
 
   void _onMouseMove(MouseEvent event) {
     _checkTargets(_dragImage._elementUnder(event.client));
-  }
-
-  void _onMouseUp(MouseEvent event) {
-    if (_activeTarget != null) {
-      _activeTarget._drop();
-      _activeTarget = null;
-    }
   }
 
   void _checkTargets(Element element) {
