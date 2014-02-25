@@ -52,6 +52,8 @@ class DragManager {
   }
 
   bool _doesHitChildElement(Element host, Element test) {
+    // This manual child testing is slow. We could probably speed this up by adding
+    // a config option if the developer wants to test for SVG elements.
     if (browser.isIe && host is svg.SvgElement) {
       return host.children.any((child) {
         return child == test || _doesHitChildElement(child, test);
