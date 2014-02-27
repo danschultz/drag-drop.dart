@@ -2,6 +2,7 @@ part of drag_drop;
 
 DragManager _dragManager = new DragManager();
 
+// TODO: Have DragManager handle the events for DragSource as well. Maybe add _activeSource
 class DragManager {
   StreamSubscription _mouseMove;
 
