@@ -141,12 +141,12 @@ class DragSource {
   void stopDrag() {
     if (isDragging) {
       element.classes.remove(IS_DRAGGING);
-      isDragging = false;
       // Global handler should go before the local one, because we want to make sure
       // DropTarget.onDrop will be called *before* DragSource.onDragEnd
       _globalOnDragEndController.add(_dragEvent);
       _onDragEndController.add(_dragEvent);
       _cleanupDrag();
+      isDragging = false;
     }
   }
 
