@@ -69,5 +69,9 @@ class DragManager {
 
   void unregisterTarget(DropTarget target) {
     _targets.remove(target);
+
+    if (_activeTarget == target) {
+      _activeTarget = null;
+    }
   }
 }
