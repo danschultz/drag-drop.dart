@@ -23,7 +23,7 @@ class DragImage {
     return found;
   }
 
-  void _show(Point origin) {
+  void show(Point origin) {
     _origin = origin + offset;
     document.body.append(element);
     _setPosition(_origin);
@@ -41,7 +41,7 @@ class DragImage {
         ..left = '${position.x.toInt()}px';
   }
 
-  void _hide() {
+  void hide() {
     element.remove();
   }
 

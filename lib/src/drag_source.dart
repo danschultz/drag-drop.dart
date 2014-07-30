@@ -152,7 +152,7 @@ class DragSource {
 
   void _showDragImage() {
     _dragImage = feedbackImage(element, _lastPointerPosition);
-    _dragImage._show(_lastPointerPosition);
+    _dragImage.show(_lastPointerPosition);
   }
 
   void _setupDragListeners() {
@@ -172,7 +172,7 @@ class DragSource {
   }
 
   void _cleanupDrag() {
-    _dragImage._hide();
+    _dragImage.hide();
     _dragImage = null;
     _dragEvent = null;
   }
