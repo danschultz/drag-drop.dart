@@ -5,26 +5,37 @@ DragManager _dragManager = new DragManager();
 // TODO: Have DragManager handle the events for DragSource as well. Maybe add _activeSource
 class DragManager {
   StreamSubscription _mouseMove;
+  StreamSubscription _mouseUp;
 
   List<DropTarget> _targets = [];
+
+  DragSource _activeSource;
   DropTarget _activeTarget;
 
   DragManager() {
     globalOnDragStart.listen((event) {
+      _activeSource = event.source;
       _mouseMove = window.onMouseMove.listen(_onMouseMove);
-    });
-
-    globalOnDragEnd.listen((_) {
-      _mouseMove.cancel();
-      if (_activeTarget != null) {
-        _activeTarget._drop();
-        _activeTarget = null;
-      }
+      _mouseUp = window.onMouseUp.take(1).listen(_onMouseUp);
     });
   }
 
   void _onMouseMove(MouseEvent event) {
     _checkTargets(_dragImage._elementUnder(event.client));
+  }
+
+  void _onMouseUp(MouseEvent event) {
+    _mouseMove.cancel();
+
+    if (_activeTarget != null) {
+      _activeTarget._drop();
+      _activeTarget = null;
+      _activeSource.stopDrag(true);
+    } else {
+      _activeSource.stopDrag(false);
+    }
+
+    _activeSource = null;
   }
 
   void _checkTargets(Element element) {
