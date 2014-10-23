@@ -92,13 +92,13 @@ class DragSource {
     });
   }
 
-  var _onDragStartController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragStartController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragStart => _onDragStartController.stream;
 
-  var _onDragController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDrag => _onDragController.stream;
 
-  var _onDragEndController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragEndController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragEnd => _onDragEndController.stream;
 
   void destroy() {
