@@ -105,6 +105,7 @@ class DropTarget {
     if (_isAccepted) {
       _logger.finer("Drop");
       _applyDrop(event.source);
+      _isAccepted = false;
     }
   }
 
