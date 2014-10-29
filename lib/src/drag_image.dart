@@ -1,13 +1,17 @@
 part of drag_drop;
 
+typedef Future DragAnimation();
+
 class DragImage {
   final Element element;
   final Point offset;
 
   Point _origin;
+  DragAnimation _cancelAnimation;
 
-  DragImage(this.element, {this.offset: const Point(0, 0)}) {
+  DragImage(this.element, {this.offset: const Point(0, 0), DragAnimation cancelAnimation}) {
     element.classes.add("drag-image");
+    _cancelAnimation = cancelAnimation;
   }
 
   factory DragImage.clone(Element element, {Point offset: const Point(0, 0)}) {
@@ -41,8 +45,13 @@ class DragImage {
         ..left = '${position.x.toInt()}px';
   }
 
-  void hide() {
-    element.remove();
+  void hide(bool animate) {
+    if (_cancelAnimation != null && animate) {
+      _cancelAnimation().then((_) => destroy());
+    } else {
+      destroy();
+    }
   }
 
+  void destroy() => element.remove();
 }

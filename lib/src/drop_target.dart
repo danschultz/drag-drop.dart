@@ -20,16 +20,16 @@ class DropTarget {
   StreamSubscription _mouseMove;
   StreamSubscription _mouseUp;
 
-  var _onDragEnterController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragEnterController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragEnter => _onDragEnterController.stream;
 
-  var _onDragOverController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragOverController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragOver => _onDragOverController.stream;
 
-  var _onDragLeaveController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragLeaveController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragLeave => _onDragLeaveController.stream;
 
-  var _onDropController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDropController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDrop => _onDropController.stream;
 
   DropTarget(this.element) {
@@ -105,6 +105,7 @@ class DropTarget {
     if (_isAccepted) {
       _logger.finer("Drop");
       _applyDrop(event.source);
+      _isAccepted = false;
     }
   }
 

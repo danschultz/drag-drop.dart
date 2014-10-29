@@ -92,13 +92,13 @@ class DragSource {
     });
   }
 
-  var _onDragStartController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragStartController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragStart => _onDragStartController.stream;
 
-  var _onDragController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDrag => _onDragController.stream;
 
-  var _onDragEndController = new StreamController<DragEvent>.broadcast(sync: true);
+  var _onDragEndController = new StreamController<DragEvent>.broadcast();
   Stream<DragEvent> get onDragEnd => _onDragEndController.stream;
 
   void destroy() {
@@ -138,13 +138,14 @@ class DragSource {
     }
   }
 
-  void stopDrag() {
+  void stopDrag(bool didDrop) {
     if (isDragging) {
       element.classes.remove(IS_DRAGGING);
       // Global handler should go before the local one, because we want to make sure
       // DropTarget.onDrop will be called *before* DragSource.onDragEnd
       _globalOnDragEndController.add(_dragEvent);
       _onDragEndController.add(_dragEvent);
+      _dragImage.hide(!didDrop);
       _cleanupDrag();
       isDragging = false;
     }
@@ -163,16 +164,9 @@ class DragSource {
       _onDragController.add(_dragEvent);
       _dragImage._move(e.client - pointerOrigin);
     });
-
-    window.onMouseUp.take(1).listen((e) {
-      // Drag end should be the last event fired. Fire it at the end of this
-      // event loop.
-      Timer.run(() => stopDrag());
-    });
   }
 
   void _cleanupDrag() {
-    _dragImage.hide();
     _dragImage = null;
     _dragEvent = null;
   }
