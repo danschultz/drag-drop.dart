@@ -1,35 +1,53 @@
 part of drag_drop;
 
-typedef Future DragAnimation();
+typedef Future DragAnimation(Element element);
 
 class DragImage {
   final Element element;
   final Point offset;
 
   Point _origin;
+  DragAnimation _showAnimation;
   DragAnimation _cancelAnimation;
+  bool _canFindElementsUnderDragImage = false;
 
-  DragImage(this.element, {this.offset: const Point(0, 0), DragAnimation cancelAnimation}) {
+  DragImage(this.element, {
+      this.offset: const Point(0, 0),
+      DragAnimation showAnimation,
+      DragAnimation cancelAnimation}) {
     element.classes.add("drag-image");
+    _showAnimation = showAnimation != null ? showAnimation : (_) => new Future.value();
     _cancelAnimation = cancelAnimation;
   }
 
-  factory DragImage.clone(Element element, {Point offset: const Point(0, 0)}) {
-    return new DragImage(element.clone(true), offset: offset);
+  factory DragImage.clone(Element element, {
+      Point offset: const Point(0, 0),
+      DragAnimation showAnimation,
+      DragAnimation cancelAnimation}) {
+    return new DragImage(
+        element.clone(true),
+        offset: offset,
+        showAnimation: showAnimation,
+        cancelAnimation: cancelAnimation);
   }
 
   Element _elementUnder(Point client) {
     // In order to get the element under the drag image, we need to hide it.
-    var previousDisplay = element.style.display;
-    element.style.display = "none";
-    var found = document.elementFromPoint(client.x, client.y);
-    element.style.display = previousDisplay;
-    return found;
+    if (_canFindElementsUnderDragImage) {
+      var previousDisplay = element.style.display;
+      element.style.display = "none";
+      var found = document.elementFromPoint(client.x, client.y);
+      element.style.display = previousDisplay;
+      return found;
+    } else {
+      return null;
+    }
   }
 
   void show(Point origin) {
     _origin = origin + offset;
     document.body.append(element);
+    _showAnimation(element).then((_) => _canFindElementsUnderDragImage = true);
     _setPosition(_origin);
   }
 
@@ -47,11 +65,14 @@ class DragImage {
 
   void hide(bool animate) {
     if (_cancelAnimation != null && animate) {
-      _cancelAnimation().then((_) => destroy());
+      _cancelAnimation(element).then((_) => destroy());
     } else {
       destroy();
     }
   }
 
-  void destroy() => element.remove();
+  void destroy() {
+    _canFindElementsUnderDragImage = false;
+    element.remove();
+  }
 }
