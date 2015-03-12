@@ -75,7 +75,7 @@ class DropTarget {
   }
 
   void _onDragEnter(DragEvent event) {
-    _logger.finer("Drag enter");
+    _logger.finest("Drag enter");
 
     var accepted = false;
 
@@ -97,13 +97,13 @@ class DropTarget {
   }
 
   void _onDragLeave(DragEvent event) {
-    _logger.finer("Drag leave");
+    _logger.finest("Drag leave");
     _isAccepted = false;
   }
 
   void _onDrop(DragEvent event) {
     if (_isAccepted) {
-      _logger.finer("Drop");
+      _logger.finest("Drop");
       _applyDrop(event.source);
       _isAccepted = false;
     }
