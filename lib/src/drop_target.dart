@@ -17,6 +17,8 @@ class DropTarget {
   bool _isAccepted = false;
   bool get isAccepted => _isAccepted;
 
+  bool isDropCancelled = false;
+
   StreamSubscription _mouseMove;
   StreamSubscription _mouseUp;
 
