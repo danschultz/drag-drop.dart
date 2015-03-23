@@ -14,7 +14,7 @@ class DragSource {
   final Element element;
 
   int distance = 5;
-  bool enabled = true;
+  bool isEnabled = true;
   DragImageFactory feedbackImage;
   final DragData data = new DragData();
 
@@ -121,7 +121,7 @@ class DragSource {
     element.classes.remove(IS_GRABBING);
     element.classes.add(IS_DRAGGING);
 
-    if (!isDragging && enabled) {
+    if (!isDragging && isEnabled) {
       if (manual) {
         if (pointerPosition != null) {
           _lastPointerPosition = pointerPosition;
