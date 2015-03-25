@@ -3,7 +3,9 @@ part of drag_drop;
 typedef DragImage DragImageFactory(Element element, Point pointer);
 
 DragImage _dragImage;
+
 DragEvent _dragEvent;
+DragEvent get dragEvent => _dragEvent;
 
 class DragSource {
   static const String IS_DRAGGING = "is-dragging";
