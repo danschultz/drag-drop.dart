@@ -1,5 +1,5 @@
 name: drag_drop
-version: 5.0.0
+version: 5.1.0
 dependencies:
   browser_detect: '>=1.0.0'
   logging: '>=0.5.13'
