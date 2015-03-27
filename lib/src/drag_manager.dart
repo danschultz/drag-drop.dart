@@ -27,7 +27,7 @@ class DragManager {
   void _onMouseUp(MouseEvent event) {
     _mouseMove.cancel();
 
-    if (_activeTarget != null && _activeTarget.isEnabled) {
+    if (_activeTarget != null && _dragEvent.isDroppable) {
       _activeTarget._drop();
       _activeTarget = null;
       _activeSource.stopDrag(true);
