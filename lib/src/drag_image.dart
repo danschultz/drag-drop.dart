@@ -34,10 +34,10 @@ class DragImage {
   Element _elementUnder(Point client) {
     // In order to get the element under the drag image, we need to hide it.
     if (_canFindElementsUnderDragImage) {
-      var previousDisplay = element.style.display;
-      element.style.display = "none";
+      var previousTop = element.style.top;
+      element.style.top = "-99999px";
       var found = document.elementFromPoint(client.x, client.y);
-      element.style.display = previousDisplay;
+      element.style.top = previousTop;
       return found;
     } else {
       return null;
